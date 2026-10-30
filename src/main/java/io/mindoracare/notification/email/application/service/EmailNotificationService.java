@@ -448,12 +448,19 @@ public class EmailNotificationService {
         // Hostname y Link
         Object linkObj = normalized.get("LINK");
         if (linkObj == null || linkObj.toString().isBlank()) {
-            linkObj = "https://astc-joyit.io";
+            String roleStr = String.valueOf(normalized.getOrDefault("ROLE_NAME", ""));
+            if ("Admin".equalsIgnoreCase(roleStr)) {
+                linkObj = "https://astc-backoffice.joyit.io";
+            } else if ("Jefe de Proyecto".equalsIgnoreCase(roleStr)) {
+                linkObj = "https://astc-project.joyit.io";
+            } else {
+                linkObj = "https://attendance.joyit.io";
+            }
             normalized.put("LINK", linkObj);
             normalized.put("link", linkObj);
         }
         String linkStr = linkObj.toString();
-        String hostname = "astc-joyit.io";
+        String hostname = "attendance.joyit.io";
         try {
             java.net.URI uri = java.net.URI.create(linkStr);
             if (uri.getHost() != null) {
